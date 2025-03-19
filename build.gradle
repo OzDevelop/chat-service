@@ -30,6 +30,17 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Spring Security 관련 의존성 추가
+    /**
+     * Spring Security 종속성을 추가한 것 만으로, 실행시켭 볼 경우 웹에로그인이 적용됨.
+     * auto-configuration 이 적용되서 그럼.
+     * 스프링 부트 프로젝트의 클래스 path에 스프링 시큐리티가 있는 걸 확인해서 자동으로 적용된 것
+     */
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
