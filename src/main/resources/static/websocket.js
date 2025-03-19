@@ -18,7 +18,7 @@ function connect() {
   websocket = new WebSocket("ws://localhost:8080/ws/chats");
   websocket.onmessage = onMessage;
   websocket.onopen = onOpen;
-  websocket.onclose = onClose;
+  websocket.onclose = onClose; 
 
   setConnected(true);
   console.log("connected: connect()");
