@@ -1,7 +1,9 @@
 let websocket;
 
 function onOpen() {
-  websocket.send("connected");
+  let username = document.getElementById("username")
+
+  websocket.send(username.value+ ": "+ "connected");
   console.log("connected: onOpen()");
 }
 
@@ -18,7 +20,7 @@ function connect() {
   websocket = new WebSocket("ws://localhost:8080/ws/chats");
   websocket.onmessage = onMessage;
   websocket.onopen = onOpen;
-  websocket.onclose = onClose; 
+  websocket.onclose = onClose;
 
   setConnected(true);
   console.log("connected: connect()");
@@ -32,9 +34,10 @@ function disconnect() {
 }
 
 function sendMessage() {
+  let username = document.getElementById("username")
   let message = document.getElementById("message");
 
-  websocket.send(message.value);
+  websocket.send(username.value+ ": "+ message.value);
   message.value = "";
   console.log("sent: send()");
 }
