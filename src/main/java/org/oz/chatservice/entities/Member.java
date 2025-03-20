@@ -8,6 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.oz.chatservice.enums.Gender;
 
 /**
@@ -17,6 +20,9 @@ import org.oz.chatservice.enums.Gender;
  * @Entity 어노테이션이 붙은 클래스는 JPA가 관리하는 클래스로 인식, Id 속성이 필수임.
  */
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Member {
 
