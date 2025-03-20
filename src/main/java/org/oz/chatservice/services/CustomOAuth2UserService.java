@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.oz.chatservice.entities.Member;
 import org.oz.chatservice.enums.Gender;
 import org.oz.chatservice.repositories.MemberRepository;
+import org.oz.chatservice.vos.CustomOAuth2User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -27,7 +28,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String email = (String) attributeMap.get("email");
         Member member = memberRepository.findByEmail(email).orElseGet(() -> registerMember(attributeMap));
 
-        return oAuth2User;
+        return new CustomOAuth2User(member, oAuth2User.getAttributes());
     }
 
     private Member registerMember(Map<String, Object> attributeMap) {
