@@ -12,17 +12,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Builder
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
-public class MemberChatroomMapping {
+@NoArgsConstructor
+@Getter
+@Entity
+public class Message {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_chatroom_mapping_id")
+    @Column(name = "message_id")
     @Id
     Long id;
+
+    String text;
 
     @JoinColumn(name = "member_id")
     @ManyToOne

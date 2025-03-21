@@ -3,8 +3,10 @@ package org.oz.chatservice.controllers;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.oz.chatservice.dtos.ChatMessage;
 import org.oz.chatservice.dtos.ChatroomDto;
-import org.oz.chatservice.entities.ChatRoom;
+import org.oz.chatservice.entities.Chatroom;
+import org.oz.chatservice.entities.Message;
 import org.oz.chatservice.services.ChatService;
 import org.oz.chatservice.vos.CustomOAuth2User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,7 +28,7 @@ public class ChatController {
 
     @PostMapping
     public ChatroomDto createChatroom(@AuthenticationPrincipal CustomOAuth2User user, @RequestParam String title) {
-        ChatRoom chatRoom = chatService.createChatRoom(user.getMember(), title);
+        Chatroom chatRoom = chatService.createChatroom(user.getMember(), title);
 
         return ChatroomDto.from(chatRoom);
     }
@@ -43,10 +45,20 @@ public class ChatController {
 
     @GetMapping
     public List<ChatroomDto> getChatroomList(@AuthenticationPrincipal CustomOAuth2User user) {
-        List<ChatRoom> chatRoomList = chatService.getAllChatrooms(user.getMember());
+        List<Chatroom> chatRoomList = chatService.getAllChatrooms(user.getMember());
 
         return chatRoomList.stream()
                 .map(ChatroomDto::from)
                 .toList();
     }
+
+    @GetMapping("/{chatroomId}/messages")
+    public List<ChatMessage> getNessageList(@PathVariable Long chatroomId) {
+        List<Message> messageList = chatService.getMesssageList(chatroomId);
+        return messageList.stream()
+                .map(message -> new ChatMessage(message.getMember().getNickName(), message.getText()))
+                .toList();
+    }
+
+
 }

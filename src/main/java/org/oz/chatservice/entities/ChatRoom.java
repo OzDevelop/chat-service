@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class ChatRoom {
+public class Chatroom {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chatroom_id")
@@ -42,7 +42,7 @@ public class ChatRoom {
     LocalDateTime createdAt;
 
     public MemberChatroomMapping addMember(Member member) {
-        if(this.getMemberChatroomMappingSet() == null) {
+        if (this.getMemberChatroomMappingSet() == null) {
             this.memberChatroomMappingSet = new HashSet<>();
         }
 
@@ -55,6 +55,5 @@ public class ChatRoom {
 
         return memberChatroomMapping;
     }
-
 }
 

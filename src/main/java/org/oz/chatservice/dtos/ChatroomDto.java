@@ -1,7 +1,7 @@
 package org.oz.chatservice.dtos;
 
 import java.time.LocalDateTime;
-import org.oz.chatservice.entities.ChatRoom;
+import org.oz.chatservice.entities.Chatroom;
 
 public record ChatroomDto(
         Long id,
@@ -9,7 +9,7 @@ public record ChatroomDto(
         Integer memberCount,
         LocalDateTime createdAt) {
 
-    public static ChatroomDto from(ChatRoom chatRoom) {
+    public static ChatroomDto from(Chatroom chatRoom) {
         return new ChatroomDto(chatRoom.getId(), chatRoom.getTitle(), chatRoom.getMemberChatroomMappingSet().size(), chatRoom.getCreatedAt());
     }
 }
