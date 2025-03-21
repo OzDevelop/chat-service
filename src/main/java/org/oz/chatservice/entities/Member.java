@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.oz.chatservice.enums.Gender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Entity 는 JPA 관점에서 테이블에 대응하는 클래스들을 의미
@@ -36,9 +37,18 @@ public class Member {
     String email;
     String nickName;
     String name;
+    String password;
     @Enumerated(EnumType.STRING)
     Gender gender;
     String phoneNumber;
-    LocalDate birthday;
+    LocalDate birthDay;
     String role;
+
+
+    public void updatePassword(String password, String confirmedPassword, PasswordEncoder passwordEncoder) {
+        if (!password.equals(confirmedPassword))
+            throw new IllegalArgumentException("패스워드가 일치하지 않습니다.");
+
+        this.password = passwordEncoder.encode(password);
+    }
 }
