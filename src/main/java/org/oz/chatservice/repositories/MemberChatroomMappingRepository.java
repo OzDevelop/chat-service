@@ -8,5 +8,5 @@ public interface MemberChatroomMappingRepository extends JpaRepository<MemberCha
     //Spring Data JPA ㅇㅔ서 제공하는 Query 메서드로 생성
     boolean existsByChatroomIdAndMemberId(Long chatroomId, Long memberId);
     void deleteByChatroomIdAndMemberId(Long chatroomId, Long memberId);
-    List<MemberChatroomMapping> findByAllByMemberId(Long memberId);
+    List<MemberChatroomMapping> findAllByMemberId(Long memberId);
 }

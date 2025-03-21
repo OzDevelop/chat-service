@@ -1,5 +1,6 @@
 package org.oz.chatservice.services;
 
+import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +29,7 @@ public class ChatService {
 
         chatroom = chatroomRepository.save(chatroom);
 
-        MemberChatroomMapping memberChatroomMapping = MemberChatroomMapping.builder()
-                .member(member)
-                .chatroom(chatroom)
-                .build();
+        MemberChatroomMapping memberChatroomMapping = chatroom.addMember(member);
 
         memberChatroomMappingRepository.save(memberChatroomMapping);
 
@@ -59,6 +57,7 @@ public class ChatService {
     }
 
     // 채팅방 나가기
+    @Transactional
     public boolean leaveChatroom(Member member, Long chatroomId) {
         if (!memberChatroomMappingRepository.existsByChatroomIdAndMemberId(chatroomId, member.getId())) {
             log.info("참여하지 않은 채팅방입니다.");
@@ -72,7 +71,7 @@ public class ChatService {
 
     // 참여한 모든 채팅방 리스트 가져오기
     public List<ChatRoom> getAllChatrooms(Member member) {
-        List<MemberChatroomMapping> memberChatroomMappingList = memberChatroomMappingRepository.findByAllByMemberId(member.getId());
+        List<MemberChatroomMapping> memberChatroomMappingList = memberChatroomMappingRepository.findAllByMemberId(member.getId());
 
         return memberChatroomMappingList.stream()
                 .map(MemberChatroomMapping::getChatroom)

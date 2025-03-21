@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,6 @@ public class ChatRoom {
     Long id;
 
     String title;
-    LocalDateTime createdAt;
 
     /** @ManyToMany를 사용하지 않는 이유.
      * 1. 채팅방에는 여러명의 멤버가 있을 수 있지만, 한 멤버는 여러개의 채팅방에 참여할 수 있음. -> 다대다
@@ -37,6 +37,24 @@ public class ChatRoom {
      */
 //    @ManyToMany
     @OneToMany(mappedBy = "chatroom")
-    Set<MemberChatroomMapping> memberChatroomMappings;
+    Set<MemberChatroomMapping> memberChatroomMappingSet;
+
+    LocalDateTime createdAt;
+
+    public MemberChatroomMapping addMember(Member member) {
+        if(this.getMemberChatroomMappingSet() == null) {
+            this.memberChatroomMappingSet = new HashSet<>();
+        }
+
+        MemberChatroomMapping memberChatroomMapping = MemberChatroomMapping.builder()
+                .member(member)
+                .chatroom(this)
+                .build();
+
+        this.memberChatroomMappingSet.add(memberChatroomMapping);
+
+        return memberChatroomMapping;
+    }
+
 }
 
