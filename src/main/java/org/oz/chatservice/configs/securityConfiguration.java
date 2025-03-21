@@ -18,7 +18,7 @@ public class securityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception  {
         httpSecurity
-                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+                .authorizeHttpRequests( request -> request.anyRequest().authenticated())
                 .oauth2Login(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable());
 
@@ -32,7 +32,7 @@ public class securityConfiguration {
                 .securityMatcher("/consultants/**", "/login")
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, "/consultants").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().hasRole("CONSULTANT"))
                 .formLogin(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable());
 
