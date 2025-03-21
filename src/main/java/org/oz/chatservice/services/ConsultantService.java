@@ -1,11 +1,14 @@
 package org.oz.chatservice.services;
 
-import java.nio.file.AccessDeniedException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.oz.chatservice.dtos.ChatroomDto;
 import org.oz.chatservice.dtos.MemberDto;
+import org.oz.chatservice.entities.Chatroom;
 import org.oz.chatservice.entities.Member;
 import org.oz.chatservice.enums.Role;
+import org.oz.chatservice.repositories.ChatroomRepository;
 import org.oz.chatservice.repositories.MemberRepository;
 import org.oz.chatservice.vos.CustomUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +20,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class ConsultantService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
+    private final ChatroomRepository chatroomRepository;
 
 
     @Override
@@ -29,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (Role.fromCode(member.getRole()) != Role.CONSULTANT) {
             throw new UsernameNotFoundException("상담사가 아닙니다.");
         }
-        return new CustomUserDetails(member);
+        return new CustomUserDetails(member, null);
     }
 
     // 스프링 시큐리티를 통해서 멤버룰 제어할 때, 패스워드는 패스워드 인코더라는 클래스를 통해 인코딩이 된 값이 들ㅇ어가야 함.
@@ -42,5 +46,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return MemberDto.from(member);
     }
+
+    public List<ChatroomDto> getAllChatrooms() {
+        List<Chatroom> chatroomList = chatroomRepository.findAll();
+
+        return chatroomList.stream().map(ChatroomDto::from).toList();
+    }
+
+
+    
 
 }

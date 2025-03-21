@@ -2,16 +2,19 @@ package org.oz.chatservice.vos;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.oz.chatservice.entities.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@AllArgsConstructor
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails extends CustomOAuth2User implements UserDetails {
 
-    private Member member;
+
+    public CustomUserDetails(Member member, Map<String, Object> attributes) {
+        super(member, attributes);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
