@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,6 +39,15 @@ public class Chatroom {
 //    @ManyToMany
     @OneToMany(mappedBy = "chatroom")
     Set<MemberChatroomMapping> memberChatroomMappingSet;
+
+    @Transient // 엔티티 속성은 테이블 컬럼으로 맵핌되게끔 되어 있는데 @Transent가 붙은 속성은 테이블에 적용되지 않음.
+    Boolean hasNewMessage;
+
+
+    // Entity에서 setter 써도 괜찮아?
+    public void setHasNewMessage(Boolean hasNewMessage) {
+        this.hasNewMessage = hasNewMessage;
+    }
 
     LocalDateTime createdAt;
 

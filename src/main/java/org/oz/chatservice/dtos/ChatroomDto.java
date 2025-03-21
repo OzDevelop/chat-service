@@ -6,10 +6,13 @@ import org.oz.chatservice.entities.Chatroom;
 public record ChatroomDto(
         Long id,
         String title,
+        Boolean hasNewMessage,
         Integer memberCount,
-        LocalDateTime createdAt) {
+        LocalDateTime createdAt
+
+        ) {
 
     public static ChatroomDto from(Chatroom chatRoom) {
-        return new ChatroomDto(chatRoom.getId(), chatRoom.getTitle(), chatRoom.getMemberChatroomMappingSet().size(), chatRoom.getCreatedAt());
+        return new ChatroomDto(chatRoom.getId(), chatRoom.getTitle(), chatRoom.getHasNewMessage(), chatRoom.getMemberChatroomMappingSet().size(), chatRoom.getCreatedAt());
     }
 }
