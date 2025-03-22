@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.oz.chatservice.dtos.ChatroomDto;
 import org.oz.chatservice.entities.Chatroom;
 import org.oz.chatservice.entities.Member;
 import org.oz.chatservice.entities.MemberChatroomMapping;
@@ -115,6 +116,13 @@ public class ChatService {
     // 특정 채팅방의 메시지 리스트 가져오기
     public List<Message> getMesssageList(Long chatroomId) {
         return messageRepository.findAllByChatroomId(chatroomId);
+    }
+
+    @Transactional
+    public ChatroomDto getChatroom(Long chatroomId) {
+        Chatroom chatroom =  chatroomRepository.findById(chatroomId).get();
+
+        return ChatroomDto.from(chatroom);
     }
 
 }

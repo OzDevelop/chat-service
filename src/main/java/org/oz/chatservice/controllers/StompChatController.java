@@ -5,6 +5,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.oz.chatservice.dtos.ChatMessage;
+import org.oz.chatservice.dtos.ChatroomDto;
 import org.oz.chatservice.entities.Message;
 import org.oz.chatservice.services.ChatService;
 import org.oz.chatservice.vos.CustomOAuth2User;
@@ -35,7 +36,8 @@ public class StompChatController {
         CustomOAuth2User user = (CustomOAuth2User)((AbstractAuthenticationToken) principal).getPrincipal();
 
         Message message = chatService.saveMessage(user.getMember(), chatroomId, payload.get("message"));
-        messagingTemplate.convertAndSend("/sub/chats/news", chatroomId);
+
+        messagingTemplate.convertAndSend("/sub/chats/updates", chatService.getChatroom(chatroomId));
 
         return new ChatMessage(principal.getName(), payload.get("message"));
     }

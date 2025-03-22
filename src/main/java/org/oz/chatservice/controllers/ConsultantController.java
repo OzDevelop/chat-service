@@ -38,7 +38,7 @@ public class ConsultantController {
     @ResponseBody
     @GetMapping("/chats")
     public Page<ChatroomDto> getChatroomPage(Pageable pageable) {
-        return consultantService.getChatroomPage(pageable); 
+        return consultantService.getChatroomPage(pageable);
     }
 
 }
