@@ -11,6 +11,8 @@ import org.oz.chatservice.enums.Role;
 import org.oz.chatservice.repositories.ChatroomRepository;
 import org.oz.chatservice.repositories.MemberRepository;
 import org.oz.chatservice.vos.CustomUserDetails;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -47,10 +49,10 @@ public class ConsultantService implements UserDetailsService {
         return MemberDto.from(member);
     }
 
-    public List<ChatroomDto> getAllChatrooms() {
-        List<Chatroom> chatroomList = chatroomRepository.findAll();
+    public Page<ChatroomDto> getChatroomPage(Pageable pageable) {
+        Page<Chatroom> chatroomPage = chatroomRepository.findAll(pageable);
 
-        return chatroomList.stream().map(ChatroomDto::from).toList();
+        return chatroomPage.map(ChatroomDto::from);
     }
 
 

@@ -53,7 +53,7 @@ public class ChatController {
     }
 
     @GetMapping("/{chatroomId}/messages")
-    public List<ChatMessage> getNessageList(@PathVariable Long chatroomId) {
+    public List<ChatMessage> getMessageList(@PathVariable Long chatroomId) {
         List<Message> messageList = chatService.getMesssageList(chatroomId);
         return messageList.stream()
                 .map(message -> new ChatMessage(message.getMember().getNickName(), message.getText()))
