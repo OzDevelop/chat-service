@@ -24,34 +24,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        Map<String, Object> attributeMap = oAuth2User.getAttribute("kakao_account");
-        String email = (String) attributeMap.get("email");
-        Member member = memberRepository.findByEmail(email).orElseGet(() -> registerMember(attributeMap));
+        // 카카오톡으로부터 가져온 정보로 (attributeMap)
+//        Map<String, Object> attributeMap = oAuth2User.getAttribute("kakao_account");
+        String email = oAuth2User.getAttribute("email");
+        // email로 디비를  조회 , 사용자가 없으면 맴버 entity를 만들고 ( registerMember(attributeMap))
+        Member member = memberRepository.findByEmail(email).orElseGet(() -> {
+            Member newMember = MemberFactory.create(userRequest, oAuth2User);
 
+            return memberRepository.save(newMember);
+        });
+
+        // 회원가입을 시키는 코드
         return new CustomOAuth2User(member, oAuth2User.getAttributes());
     }
-
-    private Member registerMember(Map<String, Object> attributeMap) {
-         // bulider 패턴 찾아보기
-        Member member = Member.builder()
-                .email((String) attributeMap.get("email"))
-                .nickName((String) ((Map) attributeMap.get("profile")).get("nickname"))
-                .name((String) attributeMap.get("name"))
-                .phoneNumber((String) attributeMap.get("phone_number"))
-                .gender(Gender.valueOf(((String) attributeMap.get("gender")).toUpperCase()))
-                .birthDay(getBirthday(attributeMap))
-                .role("ROLE_USER")
-                .build();
-
-        return memberRepository.save(member);
-    }
-
-    private LocalDate getBirthday(Map<String, Object> attributeMap) {
-        String birthYear = (String) attributeMap.get("birthyear");
-        String birthday = (String) attributeMap.get("birthday");
-
-        return LocalDate.parse(birthYear + birthday, DateTimeFormatter.BASIC_ISO_DATE);
-    }
-
 
 }
